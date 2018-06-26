@@ -6,62 +6,78 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Currency Converter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
 </head>
 
 <body>
-    <header>
-        <h1>Currency Converter</h1>
-        <p id="tagline">A simple way to convert currencies</p>
+    <header class="navbar navbar-dark fixed-top bg-dark">
+        <h1 class="navbar-brand">Currency Converter</h1>
     </header>
-    <main>
+    <main role="main">
         <section id="user_input">
-            <header>
-                Enter amount and currency to convert from:
-            </header>
-            <form>
-                <input type="number" name="amount" id="money" value="1">
-                <select name="currency" id="from" class="currency">
-                    <option selected value="KES">Kenyan Shillings</option>
-                    <option value="USD">United State Dollars</option>
-                    <option value="EUR">Euro</option>
-                </select>
-                <input type="submit" value="convert">
+            <form class="form-inline">
+                <div class="form-group mb-2 mr-sm-2 mb-sm-0">
+                    <label for="amount"> Amount: </label>
+                    <input type="number" name="amount" id="amount" value="1" class="form-control">
+                </div>
+                <div class="form-group mb-2 mr-sm-2 mb-sm-0">
+                    <label for="currency">Currency: </label>
+                    <select name="currency" id="currency" class="currency form-control">
+                        <option selected value="KES">Kenyan Shillings</option>
+                        <option value="USD">United State Dollars</option>
+                        <option value="EUR">Euro</option>
+                    </select>
+                </div>
+                <input type="submit" value="Convert" class="btn btn-primary">
             </form>
         </section>
         <section id="results">
-            <table id="converted">
-                <caption>1 shilling is equivalent to: </caption>
-                <th>
-                    <td>Currency</td>
-                    <td>Amount</td>
-                    <td>Name</td>
-                </th>
+            <table id="converted" class="table">
+                <caption>1 shilling is equivalent to... </caption>
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Symbol</th>
+                        <th scope="col">Currency</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Name</th>
+                    </tr>
+                </thead>
                 <tr>
-                    <td>USD</td>
+                    <td><img src="./static/img/dollar.png" alt="usd"></td>
+                    <th scope="row">USD</th>
                     <td>0.01</td>
                     <td>United States Dollars</td>
                 </tr>
                 <tr>
-                    <td>RSA</td>
+                    <td><img src="./static/img/rand.png" alt="rsa"></td>
+                    <th scope="row">RSA</th>
                     <td>0.20</td>
                     <td>South African Rands</td>
                 </tr>
                 <tr>
-                    <td>USH</td>
-                    <td>30</td>
+                    <td><img src="./static/img/default.png" alt="ush"></td>
+                    <th scope="row">USH</th>
+                    <td>30.00</td>
                     <td>Ugandan Shillings</td>
                 </tr>
                 <tr>
-                    <td>TSH</td>
-                    <td>20</td>
+                    <td><img src="./static/img/default.png" alt="tsh"></td>
+                    <th scope="row">TSH</th>
+                    <td>20.00</td>
                     <td>Tanzanian Shillings</td>
                 </tr>
             </table>
         </section>
     </main>
-    <footer>Made by toni_sheen</footer>
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">Made by toni_sheen.</span>
+        </div>
+    </footer>
+    <script src="main.js"></script>
+
 </body>
 
 </html>
