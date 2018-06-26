@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Currency Converter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Currency Converter</h1>
+        <p id="tagline">A simple way to convert currencies</p>
+    </header>
+    <main>
+        <section id="user_input">
+            <header>
+                Enter amount and currency to convert from:
+            </header>
+            <form>
+                <input type="number" name="amount" id="money" value="1">
+                <select name="currency" id="from" class="currency">
+                    <option selected value="KES">Kenyan Shillings</option>
+                    <option value="USD">United State Dollars</option>
+                    <option value="EUR">Euro</option>
+                </select>
+                <input type="submit" value="convert">
+            </form>
+        </section>
+        <section id="results">
+            <table id="converted">
+                <caption>1 shilling is equivalent to: </caption>
+                <th>
+                    <td>Currency</td>
+                    <td>Amount</td>
+                    <td>Name</td>
+                </th>
+                <tr>
+                    <td>USD</td>
+                    <td>0.01</td>
+                    <td>United States Dollars</td>
+                </tr>
+                <tr>
+                    <td>RSA</td>
+                    <td>0.20</td>
+                    <td>South African Rands</td>
+                </tr>
+                <tr>
+                    <td>USH</td>
+                    <td>30</td>
+                    <td>Ugandan Shillings</td>
+                </tr>
+                <tr>
+                    <td>TSH</td>
+                    <td>20</td>
+                    <td>Tanzanian Shillings</td>
+                </tr>
+            </table>
+        </section>
+    </main>
+    <footer>Made by toni_sheen</footer>
+</body>
+
+</html>
