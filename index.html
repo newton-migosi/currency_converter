@@ -17,7 +17,7 @@
     </header>
     <main role="main">
         <section id="user_input">
-            <form class="form-inline">
+            <form class="form-inline" id="convert_from">
                 <div class="form-group mb-2 mr-sm-2 mb-sm-0">
                     <label for="amount"> Amount: </label>
                     <input type="number" name="amount" id="amount" value="1" class="form-control">
@@ -38,32 +38,27 @@
                 <caption>1 shilling is equivalent to... </caption>
                 <thead class="thead-light">
                     <tr>
-                        <th scope="col">Symbol</th>
                         <th scope="col">Currency</th>
                         <th scope="col">Amount</th>
                         <th scope="col">Name</th>
                     </tr>
                 </thead>
-                <tr>
-                    <td><img src="./static/img/dollar.png" alt="usd"></td>
+                <tr class="curr">
                     <th scope="row">USD</th>
                     <td>0.01</td>
                     <td>United States Dollars</td>
                 </tr>
-                <tr>
-                    <td><img src="./static/img/rand.png" alt="rsa"></td>
+                <tr class="curr">
                     <th scope="row">RSA</th>
                     <td>0.20</td>
                     <td>South African Rands</td>
                 </tr>
-                <tr>
-                    <td><img src="./static/img/default.png" alt="ush"></td>
+                <tr class="curr">
                     <th scope="row">USH</th>
                     <td>30.00</td>
                     <td>Ugandan Shillings</td>
                 </tr>
-                <tr>
-                    <td><img src="./static/img/default.png" alt="tsh"></td>
+                <tr class="curr">
                     <th scope="row">TSH</th>
                     <td>20.00</td>
                     <td>Tanzanian Shillings</td>
