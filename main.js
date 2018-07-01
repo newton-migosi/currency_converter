@@ -49,6 +49,16 @@ function renderResult(display_element, value_dict) {
     display_element.value = value_dict.amount;
 }
 
+function registerServiceWorker(){
+    if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').then(function (registration) {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function (err) {
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    }
+}
+
 document.body.onload = function() {
     const conversion_form = document.getElementById('conversion_form');
 
@@ -58,14 +68,13 @@ document.body.onload = function() {
     const currency_to = document.getElementById('currency_to');
     const amount_to = document.getElementById('amount_to');
 
+    registerServiceWorker();
+
     getCurrencies(CURRENCIES_URL).then(currencies => {
         renderSelect(currency_from, currencies.results);
         renderSelect(currency_to, currencies.results);
     });
 
-    amount_from.value = 100;
-    currency_from.value = "EUR";
-    
     conversion_form.addEventListener('submit', e => {
             let money_from = {
                 currency: currency_from.value,
