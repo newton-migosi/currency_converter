@@ -18,23 +18,27 @@
     </header>
     <main role="main">
         <form id="conversion_form">
-            <div class="form-group mb-2 mr-sm-2 mb-sm-0">
-                <label for="amount"> Amount From: </label>
-                <input type="number" name="amount_from" id="amount_from" value="1" class="form-control">
+            <div class="row">
+                <div class="form-group mb-2 mr-sm-2 mb-sm-0 col-5">
+                    <label for="currency_from">Currency From: </label>
+                    <select id="currency_from" class="form-control form-control-lg"></select>
+                </div>
+                <div class="form-group mb-2 mr-sm-2 mb-sm-0 col-5">
+                    <label for="currency_to">Currency To: </label>
+                    <select id="currency_to" class="form-control form-control-lg"></select>
+                </div>
             </div>
-            <div class="form-group mb-2 mr-sm-2 mb-sm-0">
-                <label for="currency_from">Currency From: </label>
-                <select name="currency_from" id="currency_from" class="currency form-control"></select>
+            <div class="row">
+                <div class="form-group mb-2 mr-sm-2 mb-sm-0 col-5">
+                    <label for="amount"> Amount From: </label>
+                    <input type="number" id="amount_from" class="form-control form-control-lg">
+                </div>
+                <div class="form-group mb-2 mr-sm-2 mb-sm-0 col-5">
+                    <label for="amount_to">Converted</label>
+                    <input type="number" id="amount_to" class="form-control form-control-lg" placeholder="result" readonly>
+                </div>
             </div>
-            <div class="form-group mb-2 mr-sm-2 mb-sm-0">
-                <label for="currency_to">Currency To: </label>
-                <select name="currency_to" id="currency_to" class="currency form-control"></select>
-            </div>
-            <div class="form-group mb-2 mr-sm-2 mb-sm-0">
-                <label for="amount_to">Converted</label>
-                <input class="form-control" name="amount_to" id="amount_to" type="number" placeholder="converted" readonly>
-            </div>
-            <input type="submit" value="Convert" class="btn btn-primary">
+            <input type="submit" value="Convert" class="btn btn-primary col-3">
         </form>
     </main>
     <footer class="footer">
