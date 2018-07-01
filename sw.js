@@ -1,10 +1,10 @@
 const CACHE_NAME = 'currency-converter-cache-v1';
 const CACHE_URLS = [
-    '/',
-    '/main.css',
-    '/main.js',
-    '/bootstrap.min.css',
-    '/favicon.ico',
+    './',
+    './main.css',
+    './main.js',
+    './bootstrap.min.css',
+    './favicon.ico',
 ];
 
 self.addEventListener('install', function(event) {
