@@ -1,36 +1,15 @@
-const currecies_url = "https://free.currencyconverterapi.com/api/v5/currencies";
-const rates_url = "https://free.currencyconverterapi.com/api/v3/convert?q=IRR_JMD&compact=ultra";
+const CURRENCIES_URL = "https://free.currencyconverterapi.com/api/v5/currencies";
+const RATES_URL = "https://free.currencyconverterapi.com/api/v3/convert?compact=ultra";
 
-function getRates(currency_from, currency_to) {
-    return {
-        "EUR_BBD": 2.338076,
-        "BTN_BND": 0.019614,
-        "BTN_BND": 0.019614,
-        "XAF_CUP": 0.047248,
-        "USD_FKP": 0.757204,
-        "GIP_HUF": 371.707575,
-        "IRR_JMD": 0.003013,
-    };
+function getRates(rates_url, currency_from, currency_to) {
+    const convert_url = `${rates_url}&q=${currency_from}_${currency_to}`;
+    return fetch(convert_url)
+        .then(response => response.json());
 }
 
-function getCurrencies() {
-    return {
-        "ALL": { "currencyName": "Albanian Lek", "currencySymbol": "Lek", "id": "ALL" }, 
-        "XCD": { "currencyName": "East Caribbean Dollar", "currencySymbol": "$", "id": "XCD" }, 
-        "EUR": { "currencyName": "Euro", "currencySymbol": "€", "id": "EUR" }, 
-        "BBD": { "currencyName": "Barbadian Dollar", "currencySymbol": "$", "id": "BBD" }, 
-        "BTN": { "currencyName": "Bhutanese Ngultrum", "id": "BTN" }, 
-        "BND": { "currencyName": "Brunei Dollar", "currencySymbol": "$", "id": "BND" }, 
-        "XAF": { "currencyName": "Central African CFA Franc", "id": "XAF" }, 
-        "CUP": { "currencyName": "Cuban Peso", "currencySymbol": "$", "id": "CUP" }, 
-        "USD": { "currencyName": "United States Dollar", "currencySymbol": "$", "id": "USD" }, 
-        "FKP": { "currencyName": "Falkland Islands Pound", "currencySymbol": "£", "id": "FKP" }, 
-        "GIP": { "currencyName": "Gibraltar Pound", "currencySymbol": "£", "id": "GIP" }, 
-        "HUF": { "currencyName": "Hungarian Forint", "currencySymbol": "Ft", "id": "HUF" }, 
-        "IRR": { "currencyName": "Iranian Rial", "currencySymbol": "﷼", "id": "IRR" }, 
-        "JMD": { "currencyName": "Jamaican Dollar", "currencySymbol": "J$", "id": "JMD" },
-        "AUD": { "currencyName": "Australian Dollar", "currencySymbol": "$", "id": "AUD" },
-    };
+function getCurrencies(currencies_url) {
+    return fetch(currencies_url)
+        .then(response => response.json());
 }
 
 function convert(money, target_currency, rates) {
@@ -79,16 +58,15 @@ document.body.onload = function() {
     const amount_to = document.getElementById('amount_to');
     const currency_to = document.getElementById('currency_to');
 
-    const currencies = getCurrencies();
-
-    renderSelect(currency_from, currencies);
-    renderSelect(currency_to, currencies);
+    getCurrencies(CURRENCIES_URL).then(currencies => {
+        renderSelect(currency_from, currencies.results);
+        renderSelect(currency_to, currencies.results);
+    });
 
     amount_from.value = 100;
     currency_from.value = "EUR";
     
-    conversion_form.addEventListener('submit',
-    (e) => {
+    conversion_form.addEventListener('submit', e => {
             let money_from = {
                 currency: currency_from.value,
                 amount: amount_from.value
@@ -99,11 +77,10 @@ document.body.onload = function() {
                 amount: amount_to.value
             };
 
-            const conversion_rate = getRates(money_from.currency, money_to.currency);
-
-            money_to = convert(money_from, money_to.currency, conversion_rate);
-
-            renderResult(amount_to, money_to);
+            getRates(RATES_URL, money_from.currency, money_to.currency).then(conversion_rate => {
+                money_to = convert(money_from, money_to.currency, conversion_rate);
+                renderResult(amount_to, money_to);
+            });
 
             e.preventDefault();
         }
