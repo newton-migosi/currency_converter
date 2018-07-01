@@ -34,7 +34,7 @@ function deleteChildrenByClass(elem, className) {
     );
 }
 
-function renderSelect(select_element, value_dict) {
+function renderSelect(select_element, value_dict, offline=false) {
     deleteChildrenByClass(select_element, 'dynamic');
 
     Object.entries(value_dict).forEach(
@@ -59,6 +59,54 @@ function registerServiceWorker(){
     }
 }
 
+function openDatabase() {
+    if (!navigator.serviceWorker) {
+        return Promise.resolve();
+    }
+
+    return idb.open('CurrencyConverter', 2, function (upgradeDb) {
+        switch (upgradeDb.oldVersion) {
+            case 0:
+                const currencies_store = upgradeDb.createObjectStore('currencies', { keyPath: 'id' });
+            case 1:
+                const rates_store = upgradeDb.createObjectStore('rates_store', { keyPath: 'currencies' });
+        }
+    });
+}
+
+function addCurrenciesToDb(db, currencies) {
+    const tx = db.transaction('currencies', 'readwrite');
+    const store = tx.objectStore('currencies');
+    Object.entries(currencies).forEach(
+        ([_, currency_details]) => {
+            store.put(currency_details);
+        }
+    );
+    return tx.complete;
+}
+
+function addRatesToDb(db, rates) {
+    const tx = db.transaction('rates_store', 'readwrite');
+    const store = tx.objectStore('rates_store');
+    Object.entries(rates).forEach(
+        ([currencies, rate]) => store.put({currencies: currencies, rate: rate})
+    );
+    return tx.complete;
+}
+
+function getCurrenciesFromDb(db) {
+    const tx = db.transaction('currencies', 'readonly');
+    const store = tx.objectStore('currencies');
+    return store.getAll();
+}
+
+function getRatesFromDb(db, currency_from, currency_to) {
+    const key = `${currency_from}_${currency_to}`;
+    const tx = db.transaction('rates_store');
+    const store = tx.objectStore('rates_store');
+    return store.get(key);
+}
+
 document.body.onload = function() {
     const conversion_form = document.getElementById('conversion_form');
 
@@ -68,11 +116,22 @@ document.body.onload = function() {
     const currency_to = document.getElementById('currency_to');
     const amount_to = document.getElementById('amount_to');
 
-    registerServiceWorker();
+    const dbPromise = openDatabase();
 
+    registerServiceWorker();
+    
     getCurrencies(CURRENCIES_URL).then(currencies => {
         renderSelect(currency_from, currencies.results);
         renderSelect(currency_to, currencies.results);
+        dbPromise.then(db => addCurrenciesToDb(db, currencies.results));
+    }).catch(err => {
+        console.error("Could'nt fetch currency online trying to get locally stored. Error: ", err);
+        dbPromise.then(db => getCurrenciesFromDb(db).then(vals => 
+            {
+                renderSelect(currency_from, vals);
+                renderSelect(currency_to, vals);
+            }
+        ));
     });
 
     conversion_form.addEventListener('submit', e => {
@@ -89,7 +148,23 @@ document.body.onload = function() {
             getRates(RATES_URL, money_from.currency, money_to.currency).then(conversion_rate => {
                 money_to = convert(money_from, money_to.currency, conversion_rate);
                 renderResult(amount_to, money_to);
+                dbPromise.then(db => addRatesToDb(db, conversion_rate))
+            }).catch(err => {
+                console.error("Couldn't get rates online, trying offline. Error: ", err);
+                dbPromise.then(db => {
+                    getRatesFromDb(db, money_from.currency, money_to.currency).then(res =>
+                    {
+                        const [curr, rate] = [res.currencies, res.rate]; 
+                        conversion_rate = {};
+                        conversion_rate[curr] = rate;
+                        console.log(conversion_rate);
+                        money_to = convert(money_from, money_to.currency, conversion_rate);
+                        renderResult(amount_to, money_to);
+                    });
+
+                }).catch(() => console.log("No local version of rates found!"));
             });
+            
 
             e.preventDefault();
         }
