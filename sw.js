@@ -3,6 +3,7 @@ const CACHE_URLS = [
     './',
     './main.css',
     './main.js',
+    './idb.js',
     './bootstrap.min.css',
     './favicon.ico',
 ];
