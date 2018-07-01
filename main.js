@@ -27,15 +27,15 @@ function createOption(value, text) {
     return option;
 }
 
-function deleteChildren(elem) {
-    const children = elem.getElementsByClassName('dynamic');
+function deleteChildrenByClass(elem, className) {
+    const children = elem.getElementsByClassName(className);
     Object.entries(children).forEach(
         ([_, child]) => child.parentNode.removeChild(child)
     );
 }
 
 function renderSelect(select_element, value_dict) {
-    deleteChildren(select_element);
+    deleteChildrenByClass(select_element, 'dynamic');
 
     Object.entries(value_dict).forEach(
         ([_, details]) => {
@@ -52,11 +52,11 @@ function renderResult(display_element, value_dict) {
 document.body.onload = function() {
     const conversion_form = document.getElementById('conversion_form');
 
-    const amount_from = document.getElementById('amount_from');
     const currency_from = document.getElementById('currency_from');
+    const amount_from = document.getElementById('amount_from');
 
-    const amount_to = document.getElementById('amount_to');
     const currency_to = document.getElementById('currency_to');
+    const amount_to = document.getElementById('amount_to');
 
     getCurrencies(CURRENCIES_URL).then(currencies => {
         renderSelect(currency_from, currencies.results);
